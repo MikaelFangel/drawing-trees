@@ -1,4 +1,6 @@
-﻿type Tree<'a> = Node of 'a * 'a Tree list
+﻿module TreeModel
+
+type Tree<'a> = Node of 'a * 'a Tree list
 type Extent = (float * float) list
 
 let movetree (Node((label, x), subtrees), x': float) = Node((label, x + x'), subtrees)
