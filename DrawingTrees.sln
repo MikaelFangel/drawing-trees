@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{11525E9C-3C03-4E75-847B-83B8975C8613}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TreeModel", "tests\TreeModel\TreeModel.fsproj", "{8808F080-0A41-4593-9E04-F9886E0BB8BD}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TreeModel", "tests\TreeModel\TestTreeModel.fsproj", "{8808F080-0A41-4593-9E04-F9886E0BB8BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{762B353D-482A-4F46-A13C-95D0283C1980}"
 EndProject
