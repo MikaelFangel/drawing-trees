@@ -17,4 +17,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TreeModel\TreeModel.fsproj" />
+  </ItemGroup>
+
 </Project>
