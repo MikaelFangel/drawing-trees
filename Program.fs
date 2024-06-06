@@ -1,6 +1,11 @@
 ﻿type Tree<'a> = Node of 'a * 'a Tree list
 type Extent = (float * float) list
 
+let movetree (Node((label, x), subtrees), x': float) = Node((label, x + x'), subtrees)
+
+let moveextent e x =
+    List.map (fun (p, q) -> (p + x, q + x)) e
+
 let rec merge =
     function
     | ([], qs) -> qs
