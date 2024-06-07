@@ -1,4 +1,4 @@
-﻿module Tree
+﻿module TreeModel
 
 type 'a Tree = 
     | Node of 'a * ('a Tree list)

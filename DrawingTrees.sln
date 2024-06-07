@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{11525E9C-3C03-4E75-847B-83B8975C8613}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TreeModel", "tests\TreeModel\TestTreeModel.fsproj", "{8808F080-0A41-4593-9E04-F9886E0BB8BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{762B353D-482A-4F46-A13C-95D0283C1980}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TreeModel", "src\TreeModel\TreeModel.fsproj", "{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8808F080-0A41-4593-9E04-F9886E0BB8BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8808F080-0A41-4593-9E04-F9886E0BB8BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8808F080-0A41-4593-9E04-F9886E0BB8BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8808F080-0A41-4593-9E04-F9886E0BB8BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8808F080-0A41-4593-9E04-F9886E0BB8BD} = {11525E9C-3C03-4E75-847B-83B8975C8613}
+		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4} = {762B353D-482A-4F46-A13C-95D0283C1980}
+	EndGlobalSection
+EndGlobal
