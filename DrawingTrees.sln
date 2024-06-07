@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{762B353D-482
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TreeModel", "src\TreeModel\TreeModel.fsproj", "{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\Treeview.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
 EndProject
