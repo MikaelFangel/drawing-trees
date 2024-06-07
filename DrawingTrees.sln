@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{762B353D-482
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TreeModel", "src\TreeModel\TreeModel.fsproj", "{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B95509-C017-4B90-B405-56E1AC475B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B95509-C017-4B90-B405-56E1AC475B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B95509-C017-4B90-B405-56E1AC475B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B95509-C017-4B90-B405-56E1AC475B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,5 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8808F080-0A41-4593-9E04-F9886E0BB8BD} = {11525E9C-3C03-4E75-847B-83B8975C8613}
 		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4} = {762B353D-482A-4F46-A13C-95D0283C1980}
+		{83B95509-C017-4B90-B405-56E1AC475B2A} = {762B353D-482A-4F46-A13C-95D0283C1980}
+		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A} = {762B353D-482A-4F46-A13C-95D0283C1980}
 	EndGlobalSection
 EndGlobal
