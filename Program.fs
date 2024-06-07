@@ -1,4 +1,6 @@
-﻿type 'a Tree = 
+﻿module Tree
+
+type 'a Tree = 
     | Node of 'a * ('a Tree list)
 
 type Extent = (float*float) list 
@@ -11,16 +13,13 @@ let moveTree =
 let moveextent (e: Extent, x) = 
     List.map (fun (p, q) -> (p+x, q+x)) e 
 
-let rec merge (e1: Extent, e2: Extent) =
-    //function
+let rec merge (e1: Extent)  (e2: Extent) =
     match (e1, e2) with
     | ([], qs) -> qs
     | (ps, []) -> ps
-    | ((p, _)::ps, (_, q)::qs) -> (p, q) :: merge (ps, qs)
+    | ((p, _)::ps, (_, q)::qs) -> (p, q) :: merge ps qs
 
-let mergelist es: Extent = 
-    let merge' e1 acc = merge (e1, acc)
-    List.fold merge' [] es
+let mergelist es= List.fold merge [] es
 
 let rmax (p: float, q: float) = if p > q then p else q
 let rec fit l1 l2 = 
@@ -34,7 +33,7 @@ let rec fitlistl es =
         | _, [] -> []
         | acc, (e::es) -> 
             let x = fit acc e
-            x :: fitlistl' (merge (acc, moveextent(e, x))) es
+            x :: fitlistl' (merge acc (moveextent(e, x))) es
     fitlistl' [] es
 
 let rec fitlistr es =
@@ -43,7 +42,7 @@ let rec fitlistr es =
         | _, [] -> []
         | acc, (e::es) -> 
             let x = -(fit e acc)
-            x :: fitlistr' (merge (moveextent(e, x), acc)) es
+            x :: fitlistr' (merge (moveextent(e, x)) acc) es
     List.rev (fitlistr' [] (List.rev es))
             
 let flipextent: Extent -> Extent = List.map (fun (p, q) -> (-q, -p))
@@ -61,7 +60,3 @@ let design tree =
         let resultTree = Node((label, 0.0), ptrees)
         (resultTree, resultExtent)
     design' tree
-
-let tree2 = Node('a', [Node('b', []); Node('c', []); Node('d', [])])
-let result = design tree2
-assert (result = (Node(('a', 0.0),[Node (('b', -1.0), []); Node (('c', 0.0), []); Node (('d', 1.0), [])]),[(0.0, 0.0); (-1.0, 1.0)]))
