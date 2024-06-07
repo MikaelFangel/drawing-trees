@@ -15,6 +15,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\Tr
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
