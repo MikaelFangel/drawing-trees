@@ -48,11 +48,10 @@ let rec absoluteTree (t: Tree<'a * float>) parent =
         Node((a, parent + f), replacement)
 
 // Appends a value to a keys list.
-let addToMap depth acc f =
-    if Map.containsKey depth acc then
-        Map.find depth acc |> fun l -> Map.add depth (f :: l) acc
-    else
-        Map.add depth [ f ] acc
+let addToMap key map value =
+    match Map.tryFind key map with
+    | Some(values) -> Map.add key (value :: values) map
+    | None -> Map.add key [ value ] map
 
 // Converts a tree to a map where each layers is a key and the value is a list of all values at that layer.
 let rec treeToMap (t: Tree<'a * float>) acc depth =
