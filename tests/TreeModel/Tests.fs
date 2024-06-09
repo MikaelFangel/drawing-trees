@@ -71,24 +71,20 @@ let ``Rule 1 - Absolute; There is at least a given distance between nodes at the
 
 [<Property>]
 let ``Rule 2 - Relative; A parent should be centered over its children`` (tree: TreeModel.Tree<int>) =
-    let tree' = TreeModel.design tree |> fst
-
     let rec checkTree =
         function
         | Node(_, []) -> true
         | Node(_, subtrees) when 0.0 = subTreeMean subtrees -> List.fold (fun s e -> s && checkTree e) true subtrees
         | _ -> false
 
-    checkTree tree'
+    TreeModel.design tree |> fst |> checkTree
 
 [<Property>]
 let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: TreeModel.Tree<int>) =
-    let tree' = TreeModel.design tree |> fst |> (fun t -> absoluteTree t 0.0)
-
     let rec checkTree =
         function
         | Node(_, []) -> true
         | Node((_, f), subtrees) when f = subTreeMean subtrees -> List.fold (fun s e -> s && checkTree e) true subtrees
         | _ -> false
 
-    checkTree tree'
+    TreeModel.design tree |> fst |> (fun t -> absoluteTree t 0.0) |> checkTree
