@@ -39,11 +39,11 @@ let subTreeMean sub =
     (findLeftMost sub + findRightMost sub) / 2.0
 
 // Calculates the absolute positions in a tree and returns the tree with absolute positions.
-let rec absoluteTree (t: Tree<'a * float>) parent =
+let rec absoluteTree parent (t: Tree<'a * float>) =
     match t with
     | Node((a, f), []) -> Node((a, parent + f), [])
     | Node((a, f), subtrees) ->
-        let replacement = List.map (fun t' -> absoluteTree t' (f + parent)) subtrees
+        let replacement = List.map (fun t' -> absoluteTree (f + parent) t') subtrees
 
         Node((a, parent + f), replacement)
 
@@ -54,19 +54,19 @@ let addToMap key map value =
     | None -> Map.add key [ value ] map
 
 // Converts a tree to a map where each layers is a key and the value is a list of all values at that layer.
-let rec treeToMap (t: Tree<'a * float>) acc depth =
+let rec treeToMap acc depth (t: Tree<'a * float>) =
     match t with
     | Node((_, f), []) -> addToMap depth acc f
     | Node((_, f), subtrees) ->
         let updatedAcc = addToMap depth acc f
-        List.fold (fun acc e -> treeToMap e acc (depth + 1)) updatedAcc subtrees
+        List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
 [<Property>]
-let ``Rule 1 - Absolute; There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
+let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
     |> fst
-    |> (fun t -> absoluteTree t 0.0)
-    |> (fun t -> treeToMap t Map.empty 0)
+    |> absoluteTree 0.0
+    |> treeToMap Map.empty 0
     |> Map.forall (fun _ v -> List.pairwise v |> List.forall (fun (x, y) -> x >= y + 1.0))
 
 [<Property>]
@@ -87,4 +87,4 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
         | Node((_, f), subtrees) when f = subTreeMean subtrees -> List.fold (fun s e -> s && checkTree e) true subtrees
         | _ -> false
 
-    TreeModel.design tree |> fst |> (fun t -> absoluteTree t 0.0) |> checkTree
+    TreeModel.design tree |> fst |> absoluteTree 0.0 |> checkTree
