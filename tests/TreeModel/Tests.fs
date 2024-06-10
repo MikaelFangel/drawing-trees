@@ -73,14 +73,21 @@ let rec subtreeMap acc t =
         let updatedMap = addToMap (height+1) map (Node(x, subtrees))
         (updatedMap, height+1)
 
+let rec equalTree t1 t2 =
+    match (t1, t2) with
+    | (Node (_, []), Node (_, []))  -> true
+    | (Node (_, x1), Node (_, x2))  ->  if List.length(x1) = List.length(x2) 
+                                        then List.fold2 (fun a x y -> (equalTree x y) && a ) true x1 x2 
+                                        else false
+
 let rec posEqual t1 t2 root =
     match (t1, t2, root) with
-    | (Node (_, x1), Node (_, x2), true)  -> posEqualH x1 x2
-    | (Node ((_, f1), x1), Node ((_, f2), x2), false)   -> if f1 = f2 then posEqualH x1 x2 else false
-and posEqualH x1 x2 =
-    match (x1, x2) with 
-    | (y::tail1, z::tail2)  -> (posEqual y z false) && (posEqualH tail1 tail2)
-    | _     -> false
+    | (Node (_, x1), Node (_, x2), true)  -> List.fold2 (fun a x y -> (posEqual x y false) && a ) true x1 x2
+    | (Node ((_, f1), x1), Node ((_, f2), x2), false)   ->  if f1 = f2 
+                                                            then if List.length(x1) = List.length(x2)
+                                                                 then List.fold2 (fun a x y -> (posEqual x y false) && a ) true x1 x2 
+                                                                 else false
+                                                            else false
  
 let negNum num = if num <> 0.0 then -num else num
 
@@ -133,8 +140,15 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
 [<Property>]
 let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
     let postree = TreeModel.design tree |> fst
-    subtreeMap (Map.empty, 0) postree |> fst
-    |> Map.forall (fun _ x -> List.pairwise x |> List.forall (fun (x, y) -> posEqual x y true))
-    //printfn "%A" postree
-    //true
-
+    let map = subtreeMap (Map.empty, 0) postree |> fst
+    try
+        let xs = Map.find 2 map
+        let x::y::tail = xs
+        equalTree x y
+        |> printfn "%A"
+        false
+    with 
+        _ -> true
+    
+    //|> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
+    
