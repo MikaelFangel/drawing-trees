@@ -61,6 +61,13 @@ let rec treeToMap acc depth (t: Tree<'a * float>) =
         let updatedAcc = addToMap depth acc f
         List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
+let negNum num = if num <> 0.0 then -num else num
+
+let rec mirrorTree (t: Tree<'a * float>) =
+    match t with
+    | Node((a, f), []) -> Node((a, negNum f), [])
+    | Node((a, f), subtrees) -> Node((a, negNum f), List.rev subtrees |> List.map mirrorTree)
+
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
