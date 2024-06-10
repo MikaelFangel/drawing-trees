@@ -1,10 +1,11 @@
-module TreeView
+[<RequireQualifiedAccess>]
+module TreeView.Plotly
 
 open TreeModel
 open Plotly.NET
 
 
-let createPoint a pos depth parent =
+let private createPoint a pos depth parent =
     Chart.Point(
         [ (pos + parent, depth) ],
         MultiText = [ a ],
@@ -13,7 +14,7 @@ let createPoint a pos depth parent =
     )
 
 //creates a line to the parent
-let createParentLine pos depth parent =
+let private createParentLine pos depth parent =
     Chart.Line(
         [ parent; pos + parent ],
         [ depth + 1.0; depth ],
@@ -23,7 +24,7 @@ let createParentLine pos depth parent =
     )
 
 // draws a vertical line from (pos+parent, depth) to (parent,depth)
-let createHLine pos depth parent =
+let private createHLine pos depth parent =
     Chart.Line(
         [ pos+parent; parent],
         [ depth; depth],
@@ -32,7 +33,7 @@ let createHLine pos depth parent =
     )
 
 // draws a vertical line from pos,depth straigth down
-let createVLine pos depth =
+let private createVLine pos depth =
     Chart.Line(
         [ pos; pos],
         [ depth; depth - 0.5],
@@ -40,8 +41,7 @@ let createVLine pos depth =
         ShowLegend = false
     )
 
-
-let rec drawTreeH (pos_tree: Tree<'a * float>) depth parent =
+let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     match (pos_tree, depth) with
     | (Node((a, pos), subs), 0.0) ->
         let e1 = createPoint a pos depth parent
