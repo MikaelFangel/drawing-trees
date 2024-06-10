@@ -1,5 +1,6 @@
 // Cem Akarsubasi 2024-06-10
-module TikzView
+[<RequireQualifiedAccess>]
+module TreeView.Tikz
 
 open TreeModel
 
@@ -39,7 +40,7 @@ let private postamble =
     "\\end{tikzpicture}\n"
 
 /// Returns a latex string that draws the graph using basic Tikz commands
-let rec drawTreeTikZ design = 
+let rec drawTree design = 
     let (postree,extent) = design
     let center = drawTreeH postree 0.0 0.0
     preamble + center + postamble

@@ -1,4 +1,5 @@
-module TreeView
+[<RequireQualifiedAccess>]
+module TreeView.Plotly
 
 open TreeModel
 open Plotly.NET
