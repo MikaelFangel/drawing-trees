@@ -1,6 +1,7 @@
 module public Tests
 
 open FsCheck
+//open FsCheck.FSharp
 open FsCheck.Xunit
 
 open TreeModel
@@ -61,12 +62,44 @@ let rec treeToMap acc depth (t: Tree<'a * float>) =
         let updatedAcc = addToMap depth acc f
         List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
+let rec subtreeMap acc t =
+     match t with
+     | Node(_, []) -> acc
+     | Node(x, subtrees) -> 
+        let (map, height) = List.fold (fun acc e -> let (a,h) = subtreeMap acc e
+                                                    let (_, h1) = acc
+                                                    if h>h1 then (a,h) else (a,h1)
+                                                    ) acc subtrees
+        let updatedMap = addToMap (height+1) map (Node(x, subtrees))
+        (updatedMap, height+1)
+
+let rec posEqual t1 t2 root =
+    match (t1, t2, root) with
+    | (Node (_, x1), Node (_, x2), true)  -> posEqualH x1 x2
+    | (Node ((_, f1), x1), Node ((_, f2), x2), false)   -> if f1 = f2 then posEqualH x1 x2 else false
+and posEqualH x1 x2 =
+    match (x1, x2) with 
+    | (y::tail1, z::tail2)  -> (posEqual y z false) && (posEqualH tail1 tail2)
+    | _     -> false
+ 
 let negNum num = if num <> 0.0 then -num else num
 
 let rec mirrorTree (t: Tree<'a * float>) =
     match t with
     | Node((a, f), []) -> Node((a, negNum f), [])
     | Node((a, f), subtrees) -> Node((a, negNum f), List.rev subtrees |> List.map mirrorTree)
+
+let treegen =
+    let rec tree' s = 
+        match s with
+        | 0 -> Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))
+        | n when n>0 -> 
+            let subtree = tree' (n/2) 
+            Gen.oneof [Gen.choose (0,9) |> Gen.map3 (fun s1 s2 x -> Node (x,[s1; s2])) subtree subtree;
+                       Gen.choose (0,9) |> Gen.map4 (fun s1 s2 s3 x-> Node (x,[s1; s2; s3])) subtree subtree subtree;
+                       Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))]
+        | _ -> invalidArg "s" "Only positive arguments are allowed"
+    Gen.sized tree'
 
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
@@ -95,3 +128,13 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
         | _ -> false
 
     TreeModel.design tree |> fst |> absoluteTree 0.0 |> checkTree
+
+
+[<Property>]
+let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
+    let postree = TreeModel.design tree |> fst
+    subtreeMap (Map.empty, 0) postree |> fst
+    |> Map.forall (fun _ x -> List.pairwise x |> List.forall (fun (x, y) -> posEqual x y true))
+    //printfn "%A" postree
+    //true
+
