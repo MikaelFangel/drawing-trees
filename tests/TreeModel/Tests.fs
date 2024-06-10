@@ -61,12 +61,20 @@ let rec treeToMap acc depth (t: Tree<'a * float>) =
         let updatedAcc = addToMap depth acc f
         List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
+// Negates a number if it is not zero.
 let negNum num = if num <> 0.0 then -num else num
 
-let rec mirrorTree (t: Tree<'a * float>) =
+// Mirrors a tree.
+let rec mirrorTree (t: Tree<'a>) =
+    match t with
+    | Node(a, []) -> Node(a, [])
+    | Node(a, subtrees) -> Node(a, List.rev subtrees |> List.map mirrorTree)
+
+// Mirrors a positional tree.
+let rec mirrorTree' (t: Tree<'a * float>) =
     match t with
     | Node((a, f), []) -> Node((a, negNum f), [])
-    | Node((a, f), subtrees) -> Node((a, negNum f), List.rev subtrees |> List.map mirrorTree)
+    | Node((a, f), subtrees) -> Node((a, negNum f), List.rev subtrees |> List.map mirrorTree')
 
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
@@ -95,3 +103,9 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
         | _ -> false
 
     TreeModel.design tree |> fst |> absoluteTree 0.0 |> checkTree
+
+[<Property>]
+let ``Rule 3 - The tree should be symmetric with respect to reflection`` (tree: TreeModel.Tree<int>) =
+    let originalDesign = tree |> TreeModel.design |> fst
+    let mirroredDesign = tree |> mirrorTree |> TreeModel.design |> fst |> mirrorTree'
+    originalDesign = mirroredDesign
