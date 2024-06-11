@@ -13,11 +13,9 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "TreeModel", "src\TreeModel\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Application", "src\Application\Application.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Interface", "src\Interface\Interface.fsproj", "{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
