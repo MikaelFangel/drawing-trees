@@ -143,8 +143,23 @@ let ``mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<i
 let ``mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int * float>) =
     tree = (tree |> mirrorTree' |> mirrorTree')
 
+[<Property>]
+let ``EqualTree will see two identical trees as equal`` (tree: TreeModel.Tree<int>) =
+    equalTree tree tree
 
-// Tree prroperty tests.
+[<Property(Arbitrary=[|typedefof<SafeFloat>|])>]
+let ``PosEqual will see two identical trees as equal`` (tree: TreeModel.Tree<int*float>) =
+    posEqual tree tree true 
+
+
+// Model property tests
+[<Property>]
+let ``Design conserves tree structure`` (tree: TreeModel.Tree<int>) =
+    let postree = TreeModel.design tree |> fst
+    equalTree postree tree 
+
+
+// Tree property tests.
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
