@@ -1,11 +1,31 @@
 module public Tests
 
 open FsCheck
-//open FsCheck.FSharp
 open FsCheck.Xunit
 
 open TreeModel
 
+type SafeFloat() =
+    static member Float() =
+        Arb.Default.Float() |> Arb.filter (fun f -> not <| System.Double.IsNaN(f))
+       
+let treegen =
+    let rec tree' s = 
+        match s with
+        | 0 -> Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))
+        | n when n>0 -> 
+            let subtree = tree' (n/2) 
+            Gen.oneof [Gen.choose (0,9) |> Gen.map3 (fun s1 s2 x -> Node (x,[s1; s2])) subtree subtree;
+                       Gen.choose (0,9) |> Gen.map4 (fun s1 s2 s3 x-> Node (x,[s1; s2; s3])) subtree subtree subtree;
+                       Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))]
+        | _ -> invalidArg "s" "Only positive arguments are allowed"
+    Gen.sized tree'
+
+type MyGenerators =
+  static member Tree() =
+      {new Arbitrary<TreeModel.Tree<int>>() with
+          override _.Generator = treegen
+          override _.Shrinker _ = Seq.empty }
 
 [<Property>]
 let public ``Test`` () =
@@ -100,24 +120,30 @@ let rec mirrorTree (Node(a, s)) =
 let rec mirrorTree' (Node((a, b), s)) =
     Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
-let treegen =
-    let rec tree' s = 
-        match s with
-        | 0 -> Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))
-        | n when n>0 -> 
-            let subtree = tree' (n/2) 
-            Gen.oneof [Gen.choose (0,9) |> Gen.map3 (fun s1 s2 x -> Node (x,[s1; s2])) subtree subtree;
-                       Gen.choose (0,9) |> Gen.map4 (fun s1 s2 s3 x-> Node (x,[s1; s2; s3])) subtree subtree subtree;
-                       Gen.choose (0,9) |> Gen.map (fun x -> Node (x,[]))]
-        | _ -> invalidArg "s" "Only positive arguments are allowed"
-    Gen.sized tree'
+// Helper function tests.
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
+let ```findLeftMost - Return the first element of the list`` (tree: TreeModel.Tree<int * float> list) =
+    (findLeftMost tree) = if tree = [] then
+                              0.0
+                          else
+                              (tree |> List.head |> (fun (Node((_, f), _)) -> f))
 
-type MyGenerators =
-  static member Tree() =
-      {new Arbitrary<TreeModel.Tree<int>>() with
-          override _.Generator = treegen
-          override _.Shrinker _ = Seq.empty }
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
+let ``findRightMost - Return the last element of a list`` (tree: TreeModel.Tree<int * float> list) =
+    (findRightMost tree) = if tree = [] then
+                               0.0
+                           else
+                               (tree |> List.rev |> List.head |> (fun (Node((_, f), _)) -> f))
 
+[<Property>]
+let ``mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
+    tree = (tree |> mirrorTree |> mirrorTree)
+
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
+let ``mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int * float>) =
+    tree = (tree |> mirrorTree' |> mirrorTree')
+
+// Tree prroperty tests.
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
@@ -157,6 +183,3 @@ let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<
     let postree = TreeModel.design tree |> fst
     subtreeMap (Map.empty, 0) postree |> fst
     |> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
-    
-
-
