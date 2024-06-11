@@ -82,14 +82,14 @@ let rec treeToMap acc depth (t: Tree<'a * float>) =
         let updatedAcc = addToMap depth acc f
         List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
-let rec subtreeMap acc t =
+let rec subtreeMap (map: Map<int, list<Tree<'a>>>) t =
      match t with
-     | Node(_, []) -> acc
+     | Node(_, []) -> (map, 0)
      | Node(x, subtrees) -> 
-        let (map, height) = List.fold (fun acc e -> let (a,h) = subtreeMap acc e
-                                                    let (_, h1) = acc
+        let (map, height) = List.fold (fun acc e -> let (m1, h1) = acc
+                                                    let (a,h) = subtreeMap m1 e
                                                     if h>h1 then (a,h) else (a,h1)
-                                                    ) acc subtrees
+                                                    ) (map, 0) subtrees
         let updatedMap = addToMap (height+1) map (Node(x, subtrees))
         (updatedMap, height+1)
 
@@ -143,6 +143,7 @@ let ``mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<i
 let ``mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int * float>) =
     tree = (tree |> mirrorTree' |> mirrorTree')
 
+
 // Tree prroperty tests.
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
@@ -181,5 +182,6 @@ let ``Rule 3 - The tree should be symmetric with respect to reflection`` (tree: 
 [<Property>]
 let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
     let postree = TreeModel.design tree |> fst
-    subtreeMap (Map.empty, 0) postree |> fst
-    |> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
+    subtreeMap Map.empty postree |> fst
+    |> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) -> if equalTree x y then posEqual x y true else true))
+    
