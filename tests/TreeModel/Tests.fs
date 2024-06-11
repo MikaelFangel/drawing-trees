@@ -142,14 +142,16 @@ let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<
     let postree = TreeModel.design tree |> fst
     let map = subtreeMap (Map.empty, 0) postree |> fst
     try
+        printfn "try"
         let xs = Map.find 2 map
+        printfn "try2"
         let x::y::tail = xs
         printfn "%A" x
         printfn "%A" y
         equalTree x y
         |> printfn "%A"
         false
-    with 
+    with
         _ -> true
     
     //|> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
