@@ -5,6 +5,9 @@ open FsCheck.Xunit
 
 open TreeModel
 
+type SafeFloat() =
+    static member Float() =
+        Arb.Default.Float() |> Arb.filter (fun f -> not <| System.Double.IsNaN(f))
 
 [<Property>]
 let public ``Test`` () =
@@ -70,15 +73,19 @@ let rec mirrorTree' (Node((a, b), s)) =
     Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
 // Helper function tests.
+[<Property(Arbitrary = [| typeof<SafeFloat>|])>]
+let ``findRightMost - Return the last element of a list`` (tree: TreeModel.Tree<int * float> list) =
+    (findRightMost tree) = 
+      if tree = [] then 0.0 else
+      (tree |> List.rev |> List.head |> (fun (Node((_, f), _)) -> f))
+
 [<Property>]
-let ```mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
+let ``mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
     tree = (tree |> mirrorTree |> mirrorTree)
 
-[<Property>]
-let ```mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
-    let tree' = tree |> TreeModel.design |> fst
-    tree' = (tree' |> mirrorTree' |> mirrorTree')
-
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
+let ``mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int * float>) =
+    tree = (tree |> mirrorTree' |> mirrorTree')
 
 // Tree prroperty tests.
 [<Property>]
