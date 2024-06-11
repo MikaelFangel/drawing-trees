@@ -72,6 +72,6 @@ let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
 //         List.fold (fun a x -> List.append (drawTreeH x (depth + 1.0) (pos + parent)) a) [ e1; e2 ] subs
 
 let rec drawTree design = 
-    let (postree, extent) = design
+    let postree = design |> fst
     drawTreeH postree 0.0 0.0 |> Chart.combine |> Chart.show;
 
