@@ -108,6 +108,12 @@ let treegen =
         | _ -> invalidArg "s" "Only positive arguments are allowed"
     Gen.sized tree'
 
+type MyGenerators =
+  static member Tree() =
+      {new Arbitrary<TreeModel.Tree<int>>() with
+          override _.Generator = treegen
+          override _.Shrinker _ = Seq.empty }
+
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
@@ -140,19 +146,6 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
 [<Property>]
 let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
     let postree = TreeModel.design tree |> fst
-    let map = subtreeMap (Map.empty, 0) postree |> fst
-    try
-        printfn "try"
-        let xs = Map.find 2 map
-        printfn "try2"
-        let x::y::tail = xs
-        printfn "%A" x
-        printfn "%A" y
-        equalTree x y
-        |> printfn "%A"
-        false
-    with
-        _ -> true
-    
-    //|> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
+    subtreeMap (Map.empty, 0) postree |> fst
+    |> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
     
