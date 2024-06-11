@@ -102,6 +102,7 @@ let rec equalTree t1 t2 =
 
 let rec posEqual t1 t2 root =
     match (t1, t2, root) with
+    | (Node (_, x1), Node (_, x2), _) when List.length(x1) <> List.length(x2) -> false
     | (Node (_, x1), Node (_, x2), true)  -> List.fold2 (fun a x y -> (posEqual x y false) && a ) true x1 x2
     | (Node ((_, f1), x1), Node ((_, f2), x2), false)   ->  if f1 = f2 
                                                             then if List.length(x1) = List.length(x2)
