@@ -69,6 +69,18 @@ let rec mirrorTree (Node(a, s)) =
 let rec mirrorTree' (Node((a, b), s)) =
     Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
+// Helper function tests.
+[<Property>]
+let ```mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
+    tree = (tree |> mirrorTree |> mirrorTree)
+
+[<Property>]
+let ```mirrorTree' - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
+    let tree' = tree |> TreeModel.design |> fst
+    tree' = (tree' |> mirrorTree' |> mirrorTree')
+
+
+// Tree prroperty tests.
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
