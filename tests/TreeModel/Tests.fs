@@ -144,6 +144,8 @@ let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<
     try
         let xs = Map.find 2 map
         let x::y::tail = xs
+        printfn "%A" x
+        printfn "%A" y
         equalTree x y
         |> printfn "%A"
         false
