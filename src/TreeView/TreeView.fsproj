@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="View.fs" />
+    <Compile Include="Tikz.fs" />
+    <Compile Include="Plotly.fs" />
   </ItemGroup>
   
 

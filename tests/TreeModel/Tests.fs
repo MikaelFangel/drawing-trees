@@ -91,10 +91,14 @@ let rec posEqual t1 t2 root =
  
 let negNum num = if num <> 0.0 then -num else num
 
-let rec mirrorTree (t: Tree<'a * float>) =
-    match t with
-    | Node((a, f), []) -> Node((a, negNum f), [])
-    | Node((a, f), subtrees) -> Node((a, negNum f), List.rev subtrees |> List.map mirrorTree)
+// Mirrors a tree.
+let rec mirrorTree (Node(a, s)) =
+    Node(a, s |> List.rev |> List.map mirrorTree)
+
+
+// Mirrors a positional tree.
+let rec mirrorTree' (Node((a, b), s)) =
+    Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
 let treegen =
     let rec tree' s = 
@@ -142,6 +146,11 @@ let ``Rule 2 - Absolute; A parent should be centered over its children`` (tree: 
 
     TreeModel.design tree |> fst |> absoluteTree 0.0 |> checkTree
 
+[<Property>]
+let ``Rule 3 - The tree should be symmetric with respect to reflection`` (tree: TreeModel.Tree<int>) =
+    let originalDesign = tree |> TreeModel.design |> fst
+    let mirroredDesign = tree |> mirrorTree |> TreeModel.design |> fst |> mirrorTree'
+    originalDesign = mirroredDesign
 
 [<Property>]
 let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
@@ -149,3 +158,5 @@ let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<
     subtreeMap (Map.empty, 0) postree |> fst
     |> Map.forall (fun _ x -> List.allPairs x x |> List.forall (fun (x, y) ->  equalTree x y ))
     
+
+
