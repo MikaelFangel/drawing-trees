@@ -73,11 +73,19 @@ let rec mirrorTree' (Node((a, b), s)) =
     Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
 // Helper function tests.
-[<Property(Arbitrary = [| typeof<SafeFloat>|])>]
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
+let ```findLeftMost - Return the first element of the list`` (tree: TreeModel.Tree<int * float> list) =
+    (findLeftMost tree) = if tree = [] then
+                              0.0
+                          else
+                              (tree |> List.head |> (fun (Node((_, f), _)) -> f))
+
+[<Property(Arbitrary = [| typeof<SafeFloat> |])>]
 let ``findRightMost - Return the last element of a list`` (tree: TreeModel.Tree<int * float> list) =
-    (findRightMost tree) = 
-      if tree = [] then 0.0 else
-      (tree |> List.rev |> List.head |> (fun (Node((_, f), _)) -> f))
+    (findRightMost tree) = if tree = [] then
+                               0.0
+                           else
+                               (tree |> List.rev |> List.head |> (fun (Node((_, f), _)) -> f))
 
 [<Property>]
 let ``mirrorTree - Mirroring should return to original`` (tree: TreeModel.Tree<int>) =
