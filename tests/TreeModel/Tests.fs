@@ -66,10 +66,8 @@ let rec mirrorTree (Node(a, s)) =
     Node(a, s |> List.rev |> List.map mirrorTree)
 
 // Mirrors a positional tree.
-let rec mirrorTree' (t: Tree<'a * float>) =
-    match t with
-    | Node((a, f), []) -> Node((a, -f), [])
-    | Node((a, f), subtrees) -> Node((a, -f), List.rev subtrees |> List.map mirrorTree')
+let rec mirrorTree' (Node((a, b), s)) =
+    Node((a, -b), s |> List.rev |> List.map mirrorTree')
 
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
