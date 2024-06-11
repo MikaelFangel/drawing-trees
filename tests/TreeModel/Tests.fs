@@ -118,6 +118,8 @@ type MyGenerators =
           override _.Generator = treegen
           override _.Shrinker _ = Seq.empty }
 
+
+
 [<Property>]
 let ``Rule 1 - There is at least a given distance between nodes at the same level`` (tree: TreeModel.Tree<int>) =
     TreeModel.design tree
