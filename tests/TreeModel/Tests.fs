@@ -62,10 +62,8 @@ let rec treeToMap acc depth (t: Tree<'a * float>) =
         List.fold (fun acc e -> treeToMap acc (depth + 1) e) updatedAcc subtrees
 
 // Mirrors a tree.
-let rec mirrorTree (t: Tree<'a>) =
-    match t with
-    | Node(a, []) -> Node(a, [])
-    | Node(a, subtrees) -> Node(a, List.rev subtrees |> List.map mirrorTree)
+let rec mirrorTree (Node(a, s)) =
+    Node(a, s |> List.rev |> List.map mirrorTree)
 
 // Mirrors a positional tree.
 let rec mirrorTree' (t: Tree<'a * float>) =
