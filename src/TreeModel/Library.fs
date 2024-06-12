@@ -46,22 +46,18 @@ let rec internal fitlistr es =
 
     List.rev (fitlistr' [] (List.rev es))
 
-let internal flipextent: Extent -> Extent = List.map (fun (p, q) -> (-q, -p))
-
 let internal mean = fun (x, y) -> (x + y) / 2.0
 
 let internal fitlist =
     fun es -> List.map mean (List.zip (fitlistl es) (fitlistr es))
 
-let design tree =
-    let rec design' =
-        fun (Node(label, subtrees)) ->
-            let (trees, extents) = List.unzip (List.map design' subtrees)
-            let positions = fitlist extents
-            let ptrees = List.map moveTree (List.zip trees positions)
-            let pextents = List.map moveextent (List.zip extents positions)
-            let resultExtent = (0.0, 0.0) :: mergelist pextents
-            let resultTree = Node((label, 0.0), ptrees)
-            (resultTree, resultExtent)
-
-    design' tree
+let rec design =
+    function
+    | Node(label, subtrees) ->
+        let (trees, extents) = List.unzip (List.map design subtrees)
+        let positions = fitlist extents
+        let ptrees = List.map moveTree (List.zip trees positions)
+        let pextents = List.map moveextent (List.zip extents positions)
+        let resultExtent = (0.0, 0.0) :: mergelist pextents
+        let resultTree = Node((label, 0.0), ptrees)
+        (resultTree, resultExtent)
