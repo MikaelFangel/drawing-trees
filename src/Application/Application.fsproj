@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Examples.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TreeModel\TreeModel.fsproj" />
     <ProjectReference Include="..\TreeView\TreeView.fsproj" />
-    <ProjectReference Include="..\..\tests\TreeModel\TestTreeModel.fsproj" />
   </ItemGroup>
 
 </Project>
