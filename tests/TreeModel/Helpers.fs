@@ -22,6 +22,11 @@ let rec findRightMost =
 let subTreeMean sub =
     (findLeftMost sub + findRightMost sub) / 2.0
 
+let rec findDepth =
+    function
+    | Node (_, []) -> 0
+    | Node(_, xs) -> (List.fold (fun acc a -> max (findDepth a) acc )  0 xs) + 1
+
 // Calculates the absolute positions in a tree and returns the tree with absolute positions.
 let rec absoluteTree parent (t: Tree<'a * float>) =
     match t with
@@ -132,10 +137,19 @@ let ``AddToMap inserts the element``(key:int, a: int, map: Map<int, int list>) =
     | None      -> false
 
 [<Property>]
+let ``treeToMap makes a map with as many keys as the depth``(tree: TreeModel.Tree<int*float>) =
+    let depth = findDepth tree
+    let keys = treeToMap Map.empty 0 tree
+               |> Map.keys |> Seq.length
+    keys = depth
+
+//Should be Fact but it is not recognized
+[<Property>]
 let ``treeToMap works as intended`` () =
     let expected = Map.empty.Add(0,[0.0]).Add(1,[1.0;0.0;-1.0])
     let out = Node ((1,0.0),[Node((2,-1.0),[]);Node((3,0.0),[]);Node((4,1.0),[])]) |> treeToMap Map.empty 0
     assert (expected = out) 
+
 
 [<Property>]
 let ``subtreeMap works as intended`` () =
