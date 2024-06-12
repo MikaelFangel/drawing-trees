@@ -16,7 +16,7 @@ let rec chooseOutputType () =
         chooseOutputType ()
 
 let rec addchildren (Node(s, sub)) =
-    System.Console.WriteLine("Labels for the children of:" + s)
+    System.Console.WriteLine("Labels for the children of: " + s)
     System.Console.WriteLine("(empty indicates previous node is a leaf or previous was the last child)")
 
     match System.Console.ReadLine() with
