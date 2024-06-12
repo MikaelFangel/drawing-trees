@@ -20,7 +20,7 @@ type TreeBenchmarking() =
 
     [<GlobalSetup(Targets = [| "RenderTikz"; "RenderPlotly" |])>]
     member this.SetupRenderTikz() =
-        dtree <- Some(buildTree 5 |> TreeModel.design)
+        dtree <- Some(buildTree this.TreeSize |> TreeModel.design)
 
     [<Benchmark>]
     member _.DesignTree() =
