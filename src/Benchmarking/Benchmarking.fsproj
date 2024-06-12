@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TreeModel\TreeModel.fsproj" />
+    <ProjectReference Include="..\TreeView\TreeView.fsproj" />
   </ItemGroup>
 
 </Project>
