@@ -74,8 +74,12 @@ let ``Rule 3 - The tree should be symmetric with respect to reflection`` (tree: 
 let ``Rule 4 - identical subtrees are rendered the same`` (tree: TreeModel.Tree<int>) =
     let postree = TreeModel.design tree |> fst
 
-    subtreeMap Map.empty postree
-    |> fst
-    |> Map.forall (fun _ x ->
+    let map = subtreeMap Map.empty postree |> fst
+    Map.forall (fun _ x ->
         List.allPairs x x
-        |> List.forall (fun (x, y) -> if equalTree x y then posEqual x y true else true))
+        |> List.forall (fun (x, y) -> if equalTree x y then posEqual x y true else true)) map
+    |> Prop.classify (Map.forall (fun _ x ->
+                        List.allPairs x x
+                         |> List.forall (fun (x, y) -> not (equalTree x y))) map) "false precondition"
+
+    
