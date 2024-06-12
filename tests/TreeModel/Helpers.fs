@@ -123,3 +123,26 @@ let ``EqualTree will see two identical trees as equal`` (tree: TreeModel.Tree<in
 
 [<Property(Arbitrary = [| typedefof<SafeFloat> |])>]
 let ``PosEqual will see two identical trees as equal`` (tree: TreeModel.Tree<int * float>) = posEqual tree tree true
+
+[<Property>]
+let ``AddToMap inserts the element``(key:int, a: int, map: Map<int, int list>) =
+    let newmap = addToMap key map a
+    match (Map.tryFind key newmap) with
+    | Some xs   -> List.exists (fun x -> x = a) xs
+    | None      -> false
+
+[<Property>]
+let ``treeToMap works as intended`` () =
+    let expected = Map.empty.Add(0,[0.0]).Add(1,[1.0;0.0;-1.0])
+    let out = Node ((1,0.0),[Node((2,-1.0),[]);Node((3,0.0),[]);Node((4,1.0),[])]) |> treeToMap Map.empty 0
+    assert (expected = out) 
+
+[<Property>]
+let ``subtreeMap works as intended`` () =
+    let expected1 = Map.empty.Add(1,[Node (1,[Node(2,[]);Node(3,[]);Node(4,[])])])
+    let out1 = Node (1,[Node(2,[]);Node(3,[]);Node(4,[])]) |> subtreeMap Map.empty |> fst
+    let expected2 = Map.empty.
+                       Add(2,[Node ("A",[Node("B",[Node ("C",[]);Node("P",[])]);Node("S",[Node("T",[]);Node("e",[])]);Node("o",[Node("p",[])])])]).
+                       Add(1,[Node("o",[Node("p",[])]);Node("S",[Node("T",[]);Node("e",[])]);Node("B",[Node ("C",[]);Node("P",[])])])
+    let out2 = Node ("A",[Node("B",[Node ("C",[]);Node("P",[])]);Node("S",[Node("T",[]);Node("e",[])]);Node("o",[Node("p",[])])]) |> subtreeMap Map.empty |> fst
+    assert (expected1 = out1 && expected2 = out2) 
