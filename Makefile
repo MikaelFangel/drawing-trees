@@ -26,13 +26,13 @@ clean:
 build:
 	dotnet publish \
 	--configuration Release \
-  --framework net8.0 \
-  --self-contained true \
+  	--framework net8.0 \
+ 	--self-contained true \
 	-p:DebugSymbols=false \
-  -p:DebugType=None \
-  -p:EnableCompressionInSingleFile=true \
-  -p:IncludeNativeLibrariesForSelfExtract=true \
-  -p:PublishReadyToRun=true \
-  -p:PublishSingleFile=true \
-  -p:PublishTrimmed=true \
-  --output release
+  	-p:DebugType=None \
+  	-p:EnableCompressionInSingleFile=true \
+  	-p:IncludeNativeLibrariesForSelfExtract=true \
+  	-p:PublishReadyToRun=true \
+ 	-p:PublishSingleFile=true \
+  	-p:PublishTrimmed=true \
+  	--output release
