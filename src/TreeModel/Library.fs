@@ -1,6 +1,6 @@
 ﻿module TreeModel
 
-type 'a Tree = Node of 'a * ('a Tree list)
+type Tree<'a> = Node of 'a * (list<Tree<'a>>)
 
 type Extent = (float * float) list
 
@@ -51,6 +51,9 @@ let internal mean = fun (x, y) -> (x + y) / 2.0
 let internal fitlist =
     fun es -> List.map mean (List.zip (fitlistl es) (fitlistr es))
 
+
+/// Given a Tree<'a>, return a Tree<'a * float> where the second element of the tuple of 
+/// each node indicates the horizontal position of the given node relative to its parent
 let rec design =
     function
     | Node(label, subtrees) ->
