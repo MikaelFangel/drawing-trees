@@ -5,10 +5,10 @@ module TreeView.Tikz
 open TreeModel
 
 let private createPoint name label pos depth parent =
-    $"\\node ({name}) at ({pos + parent}, {depth}) {{{label}}};\n"
+    $"\\node (%O{name}) at (%f{pos + parent}, %f{depth}) {{%O{label}}};\n"
 
 let private createLine start finish =
-    $"\\draw [thick] ({start}) -- ({finish});\n"
+    $"\\draw [thick] (%O{start}) -- (%O{finish});\n"
 
 let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     let drawTreeH' subs toappend pos =
@@ -21,20 +21,20 @@ let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     // top node
     | (Node((a, pos), subs), 0.0) ->
         let point = createPoint a a pos (-depth) parent
-        let vline = createLine a $"{parent + pos}, {-depth - 0.5}"
+        let vline = createLine a $"%f{parent + pos}, %f{-depth - 0.5}"
         drawTreeH' subs [ point; vline; "\n" ] pos
     // bottom node
     | (Node((a, pos), []), depth) ->
         let point = createPoint a a pos (-depth) parent
-        let vline = createLine a $"{parent + pos}, {-depth + 0.5}"
-        let hline = createLine $"{parent}, {0.5 - depth}" $"{parent + pos}, {0.5 - depth}"
+        let vline = createLine a $"%f{parent + pos}, %f{-depth + 0.5}"
+        let hline = createLine $"%f{parent}, %f{0.5 - depth}" $"%f{parent + pos}, %f{0.5 - depth}"
         [ point; vline; hline; "\n" ]
     // vers node
     | (Node((a, pos), subs), depth) ->
         let point = createPoint a a pos (-depth) parent
-        let vline_top = createLine a $"{parent + pos}, {-depth + 0.5}"
-        let vline_bot = createLine a $"{parent + pos}, {-depth - 0.5}"
-        let hline = createLine $"{parent}, {0.5 - depth}" $"{parent + pos}, {0.5 - depth}"
+        let vline_top = createLine a $"%f{parent + pos}, %f{-depth + 0.5}"
+        let vline_bot = createLine a $"%f{parent + pos}, %f{-depth - 0.5}"
+        let hline = createLine $"%f{parent}, %f{0.5 - depth}" $"%f{parent + pos}, %f{0.5 - depth}"
         drawTreeH' subs [ point; vline_top; vline_bot; hline; "\n" ] pos
 
 let private preamble = "\\begin{tikzpicture}\n"
