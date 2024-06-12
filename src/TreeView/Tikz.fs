@@ -10,6 +10,25 @@ let private createPoint name label pos depth parent =
 let private createLine start finish =
     $"\\draw [thick] (%O{start}) -- (%O{finish});\n"
 
+// Gets the left most position in a list of trees.
+let private findLeftMost =
+    function
+    | [] -> 0.0
+    | Node((_, f), _) :: _ -> f
+
+// Gets the right most position in a list of trees.
+let rec private findRightMost =
+    function
+    | [] -> 0.0
+    | [ Node((_, f), _) ] -> f
+    | _ :: xs -> findRightMost xs
+
+let private createHLine subs parent pos depth =
+        let (left, right) = (findLeftMost subs, findRightMost subs)
+        match (left, right) with
+        | (0.0, 0.0) -> ""
+        | (l, r) -> createLine $"%f{l+parent+pos}, %f{-depth - 0.5}" $"%f{r+parent+pos}, %f{-depth - 0.5}" 
+
 let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     let drawTreeH' subs toappend pos =
         subs
@@ -22,19 +41,19 @@ let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     | (Node((a, pos), subs), 0.0) ->
         let point = createPoint a a pos (-depth) parent
         let vline = createLine a $"%f{parent + pos}, %f{-depth - 0.5}"
-        drawTreeH' subs [ point; vline; "\n" ] pos
+        let hline = createHLine subs parent pos depth
+        drawTreeH' subs [ point; vline; hline; "\n" ] pos
     // bottom node
     | (Node((a, pos), []), depth) ->
         let point = createPoint a a pos (-depth) parent
         let vline = createLine a $"%f{parent + pos}, %f{-depth + 0.5}"
-        let hline = createLine $"%f{parent}, %f{0.5 - depth}" $"%f{parent + pos}, %f{0.5 - depth}"
-        [ point; vline; hline; "\n" ]
+        [ point; vline; "\n" ]
     // vers node
     | (Node((a, pos), subs), depth) ->
         let point = createPoint a a pos (-depth) parent
         let vline_top = createLine a $"%f{parent + pos}, %f{-depth + 0.5}"
         let vline_bot = createLine a $"%f{parent + pos}, %f{-depth - 0.5}"
-        let hline = createLine $"%f{parent}, %f{0.5 - depth}" $"%f{parent + pos}, %f{0.5 - depth}"
+        let hline = createHLine subs parent pos depth
         drawTreeH' subs [ point; vline_top; vline_bot; hline; "\n" ] pos
 
 let private preamble = "\\begin{tikzpicture}\n"
