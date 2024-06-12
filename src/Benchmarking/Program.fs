@@ -12,14 +12,14 @@ type TreeBenchmarking() =
     let mutable tree = None
     let mutable dtree = None
 
-    [<Params(1, 2, 5, 10)>]
+    [<Params(1, 2, 5)>]
     member val TreeSize = 0 with get, set
 
     [<GlobalSetup(Target = "DesignTree")>]
     member this.SetupDesignTree() = tree <- Some(buildTree this.TreeSize)
 
     [<GlobalSetup(Targets = [| "RenderTikz"; "RenderPlotly" |])>]
-    member this.SetupRenderTikz() =
+    member this.SetupRender() =
         dtree <- Some(buildTree this.TreeSize |> TreeModel.design)
 
     [<Benchmark>]
