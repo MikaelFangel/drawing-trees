@@ -18,7 +18,7 @@ type TreeBenchmarking() =
     [<GlobalSetup(Target = "DesignTree")>]
     member this.SetupDesignTree() = tree <- Some(buildTree this.TreeSize)
 
-    [<GlobalSetup(Target = "RenderTikz")>]
+    [<GlobalSetup(Targets = [| "RenderTikz"; "RenderPlotly" |])>]
     member this.SetupRenderTikz() =
         dtree <- Some(buildTree 5 |> TreeModel.design)
 
@@ -32,6 +32,12 @@ type TreeBenchmarking() =
     member _.RenderTikz() =
         match dtree with
         | Some dtree -> TreeView.Tikz.drawTree dtree |> ignore
+        | None -> failwith "No tree to benchmark."
+
+    [<Benchmark>]
+    member _.RenderPlotly() =
+        match dtree with
+        | Some dtree -> TreeView.Plotly.drawTreeNoShow dtree |> ignore
         | None -> failwith "No tree to benchmark."
 
 [<EntryPoint>]

@@ -75,3 +75,6 @@ let rec drawTree design =
     let postree = design |> fst
     drawTreeH postree 0.0 0.0 |> Chart.combine |> Chart.show;
 
+let rec drawTreeNoShow design = 
+    let postree = design |> fst
+    drawTreeH postree 0.0 0.0 |> Chart.combine
