@@ -160,7 +160,6 @@ let ``treeToMap works as intended`` () =
     let out = Node ((1,0.0),[Node((2,-1.0),[]);Node((3,0.0),[]);Node((4,1.0),[])]) |> treeToMap Map.empty 0
     assert (expected = out) 
 
-
 [<Property>]
 let ``subtreeMap works as intended`` () =
     let expected1 = Map.empty.Add(1,[Node (1,[Node(2,[]);Node(3,[]);Node(4,[])])])
