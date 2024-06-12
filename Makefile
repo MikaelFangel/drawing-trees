@@ -4,6 +4,9 @@ run:
 test:
 	dotnet test
 
+bench:
+	dotnet run -c Release --project src/Benchmarking/Benchmarking.fsproj
+
 example1:
 	dotnet run --project src/Application/Application.fsproj -- example 1
 

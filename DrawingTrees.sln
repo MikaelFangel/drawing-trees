@@ -17,6 +17,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Application", "src\Applicat
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Treeview", "src\TreeView\TreeView.fsproj", "{83B95509-C017-4B90-B405-56E1AC475B2A}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Benchmarking", "src\Benchmarking\Benchmarking.fsproj", "{3B309308-624B-43F3-AE48-9415F6C2FED9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B309308-624B-43F3-AE48-9415F6C2FED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B309308-624B-43F3-AE48-9415F6C2FED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B309308-624B-43F3-AE48-9415F6C2FED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B309308-624B-43F3-AE48-9415F6C2FED9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 		{CAF4A9E6-CB65-4A48-9FF2-F4566D08DDE4} = {762B353D-482A-4F46-A13C-95D0283C1980}
 		{83B95509-C017-4B90-B405-56E1AC475B2A} = {762B353D-482A-4F46-A13C-95D0283C1980}
 		{ACE300DE-BD58-44F9-AA2A-B25D34A6178A} = {762B353D-482A-4F46-A13C-95D0283C1980}
+		{3B309308-624B-43F3-AE48-9415F6C2FED9} = {762B353D-482A-4F46-A13C-95D0283C1980}
 	EndGlobalSection
 EndGlobal
