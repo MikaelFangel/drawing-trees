@@ -32,9 +32,9 @@ let private createHLine subs parent pos depth =
 let rec private drawTreeH (pos_tree: Tree<'a * float>) depth parent =
     let drawTreeH' subs toappend pos =
         subs
-        |> Seq.map (fun tree -> drawTreeH tree (depth + 1.0) (pos + parent))
-        |> Seq.concat
-        |> Seq.append toappend
+        |> List.map (fun tree -> drawTreeH tree (depth + 1.0) (pos + parent))
+        |> List.concat
+        |> List.append toappend
 
     match (pos_tree, depth) with
     // top node
@@ -64,6 +64,6 @@ let private postamble = "\\end{tikzpicture}\n"
 let rec drawTree design =
     let (postree, _) = design
 
-    Seq.append (drawTreeH postree 0.0 0.0) [ postamble ]
-    |> Seq.append [ preamble ]
+    List.append (drawTreeH postree 0.0 0.0) [ postamble ]
+    |> List.append [ preamble ]
     |> String.concat ""
