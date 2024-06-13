@@ -5,6 +5,11 @@ open FsCheck.Xunit
 
 open TreeModel
 
+let oneNode =
+    function
+    | Node(_,[])    -> true
+    | _             -> false
+
 // Gets the left most position in a list of trees.
 let findLeftMost =
     function
